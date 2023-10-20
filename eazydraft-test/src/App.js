@@ -1,51 +1,34 @@
 import logo from './logo.svg';
 import './App.css';
 import {useState, useEffect} from "react"
-import Button from '@mui/material/Button';
-
-function TextItem(props){
-
-  return (
-    <div>
-      <p>
-        Name: {props.names[props.index]}
-      </p>
-      <p>
-        Age: {props.ages[props.index]}
-      </p>
-      <Button onClick={()=>props.updateDetails(props.names[props.index], props.age, props.index)}>Reset Details</Button>
-    </div>
-  )
-}
+import TextItem from './component/TextItem';
 
 
 function App() {
-  const [names, setNames] = useState(["Hello"])
-  const [ages, setAges] = useState([23])
-
+  // const [names,setNames] = useState(['Hello'])
+  // const [ages, setAges] = useState([23])
+  const [peopleDetails, setPeopleDetails] = useState([{name:"Hello",age:23}])
 
 
   function addItem(){
-    names.push(Math.random().toString(36).substring(2,7))
-    setNames(names)
-    ages.push(Math.floor(Math.random() * 100))
-    setAges(ages)
+    let newPerson ={
+      name : Math.random().toString(36).substring(2,7),
+      age : Math.floor(Math.random() * 100)
+    }
+    let addItem = [...peopleDetails,newPerson];
+    setPeopleDetails(addItem)
+    
   }
 
-  function updateDetails(name, age, index){
-    //Remove current name and replace with blank
-    let currentName = names[index]
-    let currentAge = ages[index]
-    let namearray = names.filter(item=>item!=name)
-    let agearray = ages.filter(item=>item!==age)
-    namearray.push("")
-    agearray.push("")
-    setNames(namearray)
-    setAges(agearray)
+  function updateDetails(index){
+    let updateDetail = peopleDetails.map((element,ind)=>
+      index === ind? {...element,name:""} : element
+    )
+    setPeopleDetails(updateDetail);
   }
 
   //Whenever name is updated, print it
-  console.log(names)
+  console.log(peopleDetails)
 
   return (
     <div className="App">
@@ -56,7 +39,11 @@ function App() {
         </p>
         <div onClick={addItem}>Click to add a field</div>
         {
-          names.map((name, index)=><TextItem names={names} ages={ages} index={index} updateDetails={updateDetails}/>)
+          peopleDetails.map((ele, index)=>
+          <div key={index}>
+            <TextItem name={ele.name} age={ele.age} index={index} updateDetails={updateDetails}/>
+          </div>
+          )
         }
       </header>
     </div>
