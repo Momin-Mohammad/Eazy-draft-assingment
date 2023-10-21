@@ -1,7 +1,7 @@
-import logo from './logo.svg';
 import './App.css';
 import {useState, useEffect} from "react"
 import TextItem from './component/TextItem';
+import { Button, CardHeader, Container, Grid, Typography } from '@mui/material';
 
 
 function App() {
@@ -21,32 +21,29 @@ function App() {
   }
 
   function updateDetails(index){
-    let updateDetail = peopleDetails.map((element,ind)=>
-      index === ind? {...element,name:""} : element
+    let updateDetail = peopleDetails.filter((element,ind)=>index !== ind
     )
     setPeopleDetails(updateDetail);
   }
 
-  //Whenever name is updated, print it
-  console.log(peopleDetails)
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
+    <Container className="App">
+        <Typography variant="h5" color={"blue"}>
          Welcome to the EazyDraft test application.
-        </p>
-        <div onClick={addItem}>Click to add a field</div>
+        </Typography>
+        <Button  
+        style={{padding:"2%",fontSize:"large",backgroundColor:"whitesmoke",borderRadius:"10px", margin:"3% 0%",borderLeft:"3px solid black",borderBottom:"3px solid black"}} 
+        onClick={addItem}>Click to add a field</Button>
+        <Grid container spacing={5}>
         {
           peopleDetails.map((ele, index)=>
-          <div key={index}>
+          <Grid item key={index}>
             <TextItem name={ele.name} age={ele.age} index={index} updateDetails={updateDetails}/>
-          </div>
+          </Grid>
           )
         }
-      </header>
-    </div>
+        </Grid>
+    </Container>
   );
 }
 
